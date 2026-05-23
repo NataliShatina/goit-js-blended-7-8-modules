@@ -65,6 +65,10 @@ ul {
   margin: 5px;
 }
 
+.active {
+  color: red;
+}
+
 .even {
   background-color: #8bc34a;
 }
