@@ -155,6 +155,7 @@ list.insertAdjacentHTML("beforeend", newItem);
 // 6 символів то додати клас `success`. Якщо ж символів менше аніж 6,
 // то клас `error`
 const input = document.querySelector(".js-username-input");
+
 // console.log(input);
 input.addEventListener("input", () => {
   const value = input.value.trim();
@@ -166,15 +167,28 @@ input.addEventListener("input", () => {
     input.classList.add("error");
     input.classList.remove("success");
   }
+  userSpan.textContent = value ? value : DEFAULT_NAME;
 });
 // 2 - При події `focus` зроби перевірку на пустоту поля інпута,
 // якщо ж поле пусте, то зроби `outline` => `'3px solid red'`,
 // якщо при фокусі поле непусте, то `outline` => `'3px solid green'`
-
+input.addEventListener("focus", () => {
+  if (input.value.trim() === "") {
+    input.style.outline = "3px solid red";
+  } else {
+    input.style.outline = "3px solid green";
+  }
+});
 // 3 - При події `blur` зроби перевірку на пустоту поля інпута,
 // якщо ж поле пусте, то зроби `outline` => `'3px solid red'`,
 // якщо при фокусі поле непусте, то `outline` => `'3px solid lime'`
-
+input.addEventListener("blur", () => {
+  if (input.value.trim() === "") {
+    input.style.outline = "3px solid red";
+  } else {
+    input.style.outline = "3px solid lime";
+  }
+});
 // 4 - При події `submit`. Відміни поведінку браузера по змовчуванню.
 // Дістань данні з інпуту і чек боксу, зроби перевірку,
 // що інпут не порожній, також, що нажатий чек бокс у положення true,
@@ -186,3 +200,28 @@ input.addEventListener("input", () => {
 // щоб на місце повернулось дефолтне знаяення "Anonymous".
 // При відправці форми, очисти інпут, верни чек бокс у положення
 // false, верни дефолтне значення "Anonymous" у span.
+const form = document.querySelector(".js-contact-form");
+const checkbox = document.querySelector(".js-policy-checkbox");
+const userSpan = document.querySelector(".js-username-output");
+
+const DEFAULT_NAME = "Anonymous";
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const valueInput = input.value.trim();
+  const isChecked = checkbox.checked;
+  if (valueInput !== "" && isChecked) {
+    const data = { userName: valueInput };
+    console.log(data);
+  } else {
+    console.log("Заповніть поле та підтвердіть згоду");
+    return;
+  }
+
+  // очищення форми
+  input.value = "";
+  checkbox.checked = false;
+  userSpan.textContent = DEFAULT_NAME;
+  input.classList.remove("success", "error");
+  // input.style.outline = "";
+});
